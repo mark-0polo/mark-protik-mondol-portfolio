@@ -1,64 +1,68 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Security meta tags -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-  <!-- Security meta tags -->
-  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Mark Protik Mondol | Portfolio</title>
+    <meta name="title"       content="Mark Protik Mondol | AI & ML Engineer" />
+    <meta name="description" content="AI Engineer and Machine Learning Engineer specializing in Computer Vision, Data Annotation, and Applied AI Research. Experienced with Roboflow, Google Colab, and Kaggle." />
+    <meta name="keywords"    content="Mark Protik Mondol, AI Engineer, Machine Learning Engineer, Computer Vision, Data Annotation, AI Research, Roboflow, Kaggle, Google Colab, Deep Learning, Python, C++, Data Science" />
+    <meta name="author"      content="Mark Protik Mondol" />
 
-  <title>Mark Protik Mondol | Portfolio</title>
-  <meta name="title" content="Mark Protik Mondol | AI & ML Engineer" />
-  <meta name="description"
-    content="AI Engineer and Machine Learning Engineer specializing in Computer Vision, Data Annotation, and Applied AI Research. Experienced with Roboflow, Google Colab, and Kaggle." />
-  <meta name="keywords"
-    content="Mark Protik Mondol, AI Engineer, Machine Learning Engineer, Computer Vision, Data Annotation, AI Research, Roboflow, Kaggle, Google Colab, Deep Learning, Python, C++, Data Science" />
-  <meta name="author" content="Mark Protik Mondol" />
+    <meta property="og:type"        content="website" />
+    <meta property="og:url"         content="https://mark-0polo.github.io/" />
+    <meta property="og:site_name"   content="Mark Protik Mondol Portfolio" />
+    <meta property="og:title"       content="Mark Protik Mondol | AI & ML Engineer" />
+    <meta property="og:description" content="AI Engineer specializing in Machine Learning, Computer Vision, and AI Research. Skilled in Roboflow, Kaggle, and Colab workflows." />
+    <meta property="og:image"       content="https://mark-0polo.github.io/social-card.png" />
 
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mark-0polo.github.io/" />
-  <meta property="og:site_name" content="Mark Protik Mondol Portfolio" />
-  <meta property="og:title" content="Mark Protik Mondol | AI & ML Engineer" />
-  <meta property="og:description"
-    content="AI Engineer specializing in Machine Learning, Computer Vision, and AI Research. Skilled in Roboflow, Kaggle, and Colab workflows." />
-  <meta property="og:image" content="https://mark-0polo.github.io/social-card.png" />
+    <meta property="twitter:card"        content="summary_large_image" />
+    <meta property="twitter:url"         content="https://mark-0polo.github.io/" />
+    <meta property="twitter:title"       content="Mark Protik Mondol | AI & ML Engineer" />
+    <meta property="twitter:description" content="AI & ML Engineer focused on Computer Vision, Data Annotation, and Research. Experienced with Roboflow, Kaggle, and Colab." />
+    <meta property="twitter:image"       content="https://mark-0polo.github.io/social-card.png" />
 
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://mark-0polo.github.io/" />
-  <meta property="twitter:title" content="Mark Protik Mondol | AI & ML Engineer" />
-  <meta property="twitter:description"
-    content="AI & ML Engineer focused on Computer Vision, Data Annotation, and Research. Experienced with Roboflow, Kaggle, and Colab." />
-  <meta property="twitter:image" content="https://mark-0polo.github.io/social-card.png" />
+    <!--
+      Google Fonts
+      display=swap → text renders in fallback font immediately (avoids invisible text flash)
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
 
+    <!--
+      Font Awesome — loaded directly from cdnjs without an integrity hash.
+      (An incorrect hash silently blocks the stylesheet and removes ALL icons.)
+    -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-    rel="stylesheet" />
-
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
-  <script>
-    (function () {
-      try {
-        var t = localStorage.getItem('theme');
-        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
-      } catch (e) { }
-    })();
-  </script>
-  <script type="module" crossorigin src="/assets/index-CwU4ZBon.js"></script>
-  <link rel="modulepreload" crossorigin href="/assets/react-jVyfcstf.js">
-  <link rel="stylesheet" crossorigin href="/assets/index-i4gGAVwh.css">
-</head>
-
-<body>
-  <div id="root"></div>
-</body>
-
+    <!-- Prevent flash of wrong theme on page load -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-DqfJCuIx.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-jVyfcstf.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BKvt-_d0.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

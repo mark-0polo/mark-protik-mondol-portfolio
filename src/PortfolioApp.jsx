@@ -1,5 +1,5 @@
-import { useEffect, useCallback, useRef, useState } from 'react';
-import './App.css';
+import { useEffect, useCallback, useState } from 'react';
+import './PortfolioApp.css';
 
 /* ─── Utility: scramble-text animation ──────────────────────── */
 const CHARSET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -157,7 +157,6 @@ function HeroSection() {
             className="signature"
             alt="Mark Protik Mondol signature"
             src="assets/sig2.png"
-            style={{ width: '350px', height: 'auto' }}
             decoding="async"
           />
         </div>
@@ -202,6 +201,18 @@ function HeroSection() {
 }
 
 function AboutSection() {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleFlipToggle = () => {
+    setIsFlipped((prev) => !prev);
+  };
+
+  const handleCardClick = () => {
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
+      handleFlipToggle();
+    }
+  };
+
   return (
     <section className="about-showcase">
       <article className="about-card reveal">
@@ -224,7 +235,20 @@ function AboutSection() {
       </article>
 
       <div className="about-photo-wrap reveal">
-        <div className="about-flip-card" aria-label="Interactive profile card for Mark Protik Mondol">
+        <div
+          className={`about-flip-card${isFlipped ? ' is-flipped' : ''}`}
+          aria-label="Interactive profile card for Mark Protik Mondol"
+          role="button"
+          tabIndex={0}
+          aria-pressed={isFlipped}
+          onClick={handleCardClick}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              handleFlipToggle();
+            }
+          }}
+        >
           <div className="about-flip-card-inner">
             <div className="about-flip-face about-flip-front">
               <img
@@ -256,6 +280,72 @@ function AboutSection() {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+const EDUCATION_ITEMS = [
+  {
+    id: 'edu-university',
+    title: 'University',
+    name: 'United International University',
+    subtitle: 'BSc in Computer Science & Engineering',
+    meta: 'Academic Focus',
+    detail: '2021 - 2025',
+    icon: 'fa-solid fa-building-columns',
+  },
+  {
+    id: 'edu-status',
+    title: 'Current Status',
+    name: 'Open to Work',
+    subtitle: 'AI / ML / Software Engineering',
+    meta: 'Working Status',
+    detail: 'Available for full-time roles, internships, and collaborative research opportunities.',
+    availability: 'ready',
+    icon: 'fa-solid fa-briefcase',
+  },
+  {
+    id: 'edu-college',
+    title: 'College',
+    name: 'Notre Dame College',
+    subtitle: 'Science',
+    meta: 'Academic Foundation',
+    detail: '2018 - 2020',
+    icon: 'fa-solid fa-school',
+  },
+];
+
+function EducationSection() {
+  return (
+    <section className="education-section reveal" id="education" aria-labelledby="education-heading">
+      <div className="section-title education-title">
+        <p>Academic Profile</p>
+        <h2 id="education-heading">Education &amp; Status</h2>
+      </div>
+
+      <div className="education-grid" role="list">
+        {EDUCATION_ITEMS.map(({ id, title, name, subtitle, meta, detail, icon, availability }) => (
+          <article key={id} className="education-card" role="listitem" aria-label={`${title}: ${name}`}>
+            {availability ? (
+              <span
+                className={`work-status-dot ${availability}`}
+                aria-label={availability === 'ready' ? 'Ready to work' : 'Currently working in a company'}
+                title={availability === 'ready' ? 'Ready to work' : 'Currently working in a company'}
+              />
+            ) : null}
+            <div className="education-logo" aria-hidden="true">
+              <i className={icon} />
+            </div>
+            <div className="education-copy">
+              <span className="education-kicker">{title}</span>
+              <h3>{name}</h3>
+              <p className="education-subtitle">{subtitle}</p>
+              {detail ? <p className="education-detail">{detail}</p> : null}
+              <span className="education-meta">{meta}</span>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -431,43 +521,9 @@ const CERTIFICATES = [
 ];
 
 function CertificatesSection() {
-  const STACK_DEPTH = 2;
-  const DRAG_THRESHOLD = 84;
-  const DRAG_START_DISTANCE = 8;
-  const SWAP_DURATION = 340;
+  const STACK_DEPTH = 3;
   const [activeCert, setActiveCert] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDeckExpanded, setIsDeckExpanded] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isSwapping, setIsSwapping] = useState(false);
-  const [swipeDirection, setSwipeDirection] = useState(0);
-  const dragRef = useRef({
-    active: false,
-    pointerId: null,
-    startX: 0,
-    delta: 0,
-    moved: false,
-  });
-  const suppressClickRef = useRef(false);
-  const dragOffsetRef = useRef(0);
-  const dragRafRef = useRef(null);
-  const swapTimerRef = useRef(null);
   const totalCerts = CERTIFICATES.length;
-
-  useEffect(() => () => {
-    if (dragRafRef.current) cancelAnimationFrame(dragRafRef.current);
-    if (swapTimerRef.current) window.clearTimeout(swapTimerRef.current);
-  }, []);
-
-  const setDragOffsetSmooth = (nextOffset) => {
-    dragOffsetRef.current = nextOffset;
-    if (dragRafRef.current) return;
-
-    dragRafRef.current = requestAnimationFrame(() => {
-      dragRafRef.current = null;
-      setDragOffset(dragOffsetRef.current);
-    });
-  };
 
   const getWrappedOffset = (index) => {
     const raw = index - activeCert;
@@ -477,79 +533,28 @@ function CertificatesSection() {
     ), raw);
   };
 
-  const finishDrag = (event, index) => {
-    const drag = dragRef.current;
-    if (index !== activeCert || !drag.active) return;
-    if (event?.pointerId !== undefined && drag.pointerId !== event.pointerId) return;
-
-    const shouldAdvance = drag.moved && Math.abs(drag.delta) > DRAG_THRESHOLD;
-    const direction = drag.delta < 0 ? 1 : -1;
-
-    if (shouldAdvance) {
-      setIsDragging(false);
-      setIsSwapping(true);
-      setSwipeDirection(direction);
-
-      if (swapTimerRef.current) window.clearTimeout(swapTimerRef.current);
-      swapTimerRef.current = window.setTimeout(() => {
-        setActiveCert((prev) => (prev + direction + totalCerts) % totalCerts);
-        setIsSwapping(false);
-        setSwipeDirection(0);
-        setDragOffset(0);
-        dragOffsetRef.current = 0;
-        swapTimerRef.current = null;
-      }, SWAP_DURATION);
-    } else {
-      setIsDragging(false);
-      setDragOffsetSmooth(0);
-    }
-
-    if (drag.moved) {
-      suppressClickRef.current = true;
-      window.setTimeout(() => { suppressClickRef.current = false; }, 0);
-    }
-
-    dragRef.current = {
-      active: false,
-      pointerId: null,
-      startX: 0,
-      delta: 0,
-      moved: false,
-    };
-
-    if (!shouldAdvance) {
-      dragOffsetRef.current = 0;
-    }
+  const moveCards = (direction) => {
+    setActiveCert((prev) => (prev + direction + totalCerts) % totalCerts);
   };
 
   const getCardStyle = (index) => {
     const offset = getWrappedOffset(index);
     const limitedOffset = Math.max(-STACK_DEPTH, Math.min(STACK_DEPTH, offset));
     const isActive = limitedOffset === 0;
-    const hidden = Math.abs(offset) > STACK_DEPTH;
-    const deckAnimated = isDeckExpanded || isDragging || isSwapping;
-    const dragProgress = isDragging ? Math.max(-1, Math.min(1, dragOffset / 180)) : 0;
-    const slotShift = isSwapping ? swipeDirection : dragProgress * 0.42;
-    const effectiveOffset = isActive ? 0 : limitedOffset - slotShift;
-    const absEffectiveOffset = Math.abs(effectiveOffset);
-    const spreadUnit = deckAnimated ? 124 : 36;
-    const x = isActive ? dragOffset : effectiveOffset * spreadUnit;
-    const y = isActive
-      ? (deckAnimated ? -40 : -26)
-      : 14 + Math.min(absEffectiveOffset, STACK_DEPTH) * 18;
-    const scale = isActive
-      ? (deckAnimated ? 1.02 : 1)
-      : Math.max(0.84, 1 - Math.min(absEffectiveOffset, STACK_DEPTH) * 0.07);
-    const rotate = isActive
-      ? dragProgress * 2.4
-      : effectiveOffset * 5.5;
-    const opacity = hidden ? 0 : absEffectiveOffset > 1.35 ? 0.58 : 1;
+    const isHidden = Math.abs(offset) > STACK_DEPTH;
+    const absOffset = Math.abs(limitedOffset);
+    const x = limitedOffset * 124;
+    const y = isActive ? -22 : 12 + absOffset * 14;
+    const scaleY = isActive ? 1.04 : Math.max(0.74, 1 - absOffset * 0.09);
+    const scaleX = isActive ? 1.12 : Math.max(0.88, 1 - absOffset * 0.04);
+    const rotate = isActive ? 0 : limitedOffset * 3.8;
+    const opacity = isHidden ? 0 : Math.max(0.25, 1 - absOffset * 0.22);
 
     return {
-      zIndex: isActive ? 40 : 30 - Math.round(absEffectiveOffset * 10),
+      zIndex: isActive ? 60 : 50 - Math.round(absOffset * 10),
       opacity,
-      pointerEvents: hidden ? 'none' : 'auto',
-      transform: `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0) scale(${scale}) rotate(${rotate}deg)`,
+      pointerEvents: isHidden ? 'none' : 'auto',
+      transform: `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0) rotate(${rotate}deg) scale3d(${scaleX}, ${scaleY}, 1)`,
     };
   };
 
@@ -562,77 +567,40 @@ function CertificatesSection() {
 
       <div className="cert-stack-shell">
         <div className="certs-rail-hint" aria-hidden="true">
-          <span>Grab the card</span>
-          <i className="fa-solid fa-arrow-right-long" />
+          <span>Center card is active</span>
+          <i className="fa-solid fa-arrows-left-right" />
         </div>
 
-        <div
-          className={`cert-stack${isDeckExpanded ? ' is-expanded' : ''}${isDragging ? ' is-dragging' : ''}${isSwapping ? ' is-swapping' : ''}`}
-          onMouseEnter={() => setIsDeckExpanded(true)}
-          onMouseLeave={() => {
-            if (!dragRef.current.active) setIsDeckExpanded(false);
-          }}
-          onFocus={() => setIsDeckExpanded(true)}
-          onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) {
-              setIsDeckExpanded(false);
-            }
-          }}
-          aria-label="Stacked certificates deck"
-        >
+        <div className="cert-stack" aria-label="Stacked certificates deck">
+          <button
+            type="button"
+            className="cert-nav cert-nav-prev"
+            aria-label="Show previous certificate"
+            onClick={() => moveCards(-1)}
+          >
+            <i className="fa-solid fa-chevron-left" aria-hidden="true" />
+          </button>
+
           {CERTIFICATES.map(({ id, title, issuer, date, icon, iconCls, verifyUrl, label }, index) => {
             const isActive = index === activeCert;
 
             return (
               <article
                 key={id}
-                className={`cert-card cert-swipe-card${isActive ? ' is-active' : ''}${isDragging && isActive ? ' is-dragging' : ''}${isSwapping ? ' is-swapping' : ''}`}
+                className={`cert-card cert-swipe-card${isActive ? ' is-active' : ''}`}
                 aria-label={`${title} certificate from ${issuer}`}
                 style={getCardStyle(index)}
-                onPointerDown={(event) => {
-                  if (isSwapping) return;
-                  if (!isActive) return;
-                  if (event.button !== undefined && event.button !== 0) return;
-                  if (event.target.closest('.cert-verify-link')) return;
-
-                  dragRef.current = {
-                    active: true,
-                    pointerId: event.pointerId,
-                    startX: event.clientX,
-                    delta: 0,
-                    moved: false,
-                  };
-
-                  setIsDragging(true);
-                  setIsDeckExpanded(true);
-                  event.preventDefault();
-                  event.currentTarget.setPointerCapture?.(event.pointerId);
+                onClick={() => {
+                  setActiveCert(index);
                 }}
-                onPointerMove={(event) => {
-                  const drag = dragRef.current;
-                  if (!isActive || !drag.active || drag.pointerId !== event.pointerId) return;
-
-                  const delta = event.clientX - drag.startX;
-                  const limitedDelta = Math.sign(delta) * Math.min(Math.abs(delta), 260);
-                  drag.delta = limitedDelta;
-                  drag.moved = drag.moved || Math.abs(limitedDelta) > DRAG_START_DISTANCE;
-                  setDragOffsetSmooth(limitedDelta);
-                }}
-                onPointerUp={(event) => finishDrag(event, index)}
-                onPointerCancel={(event) => finishDrag(event, index)}
-                onLostPointerCapture={(event) => finishDrag(event, index)}
-                onClick={(event) => {
-                  if (suppressClickRef.current || isDragging || isSwapping) {
+                role="button"
+                tabIndex={0}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault();
-                    event.stopPropagation();
-                    return;
-                  }
-
-                  if (!isActive) {
                     setActiveCert(index);
                   }
                 }}
-                onMouseEnter={() => setIsDeckExpanded(true)}
               >
                 <div className={`cert-icon-wrap ${iconCls}`}>
                   <i className={icon} aria-hidden="true" />
@@ -659,17 +627,8 @@ function CertificatesSection() {
                   rel="noopener noreferrer"
                   className="cert-verify cert-verify-link"
                   aria-label={`Verify certificate: ${title} from ${issuer}`}
-                  onPointerDown={(event) => {
-                    event.stopPropagation();
-                  }}
-                  onPointerUp={(event) => {
-                    event.stopPropagation();
-                  }}
                   onClick={(event) => {
                     event.stopPropagation();
-                    if (suppressClickRef.current) {
-                      event.preventDefault();
-                    }
                   }}
                 >
                   <span>Verify</span>
@@ -678,6 +637,15 @@ function CertificatesSection() {
               </article>
             );
           })}
+
+          <button
+            type="button"
+            className="cert-nav cert-nav-next"
+            aria-label="Show next certificate"
+            onClick={() => moveCards(1)}
+          >
+            <i className="fa-solid fa-chevron-right" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </section>
@@ -686,6 +654,50 @@ function CertificatesSection() {
 
 /* ─── Contact Section ────────────────────────────────────────── */
 function ContactSection() {
+  const [submitState, setSubmitState] = useState('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setSubmitState('submitting');
+    setSubmitMessage('');
+
+    try {
+      const response = await fetch('https://formspree.io/f/xlgpyeyo', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        form.reset();
+        setSubmitState('success');
+        setSubmitMessage('Message sent successfully. I will get back to you soon.');
+        return;
+      }
+
+      let payload = null;
+      try {
+        payload = await response.json();
+      } catch {
+        payload = null;
+      }
+
+      const fallbackError = 'Message could not be sent right now. Please try again in a moment.';
+      const apiError = payload?.errors?.[0]?.message;
+      setSubmitState('error');
+      setSubmitMessage(apiError || fallbackError);
+    } catch {
+      setSubmitState('error');
+      setSubmitMessage('Network issue while sending the message. Please try again.');
+    }
+  };
+
   return (
     <section className="contact-section reveal" id="contact" aria-labelledby="contact-heading">
       <div className="contact-container">
@@ -721,8 +733,7 @@ function ContactSection() {
 
           <form
             className="contact-form compact-form"
-            action="https://formspree.io/f/xlgpyeyo"
-            method="POST"
+            onSubmit={handleSubmit}
           >
             <div className="compact-grid">
               <div className="form-group">
@@ -742,10 +753,15 @@ function ContactSection() {
                 <textarea id="message" name="message" rows="5" placeholder="Tell me a little about your idea or message..." required />
               </div>
             </div>
-            <button type="submit" className="contact-submit">
-              <span>Send Message</span>
+            <button type="submit" className="contact-submit" disabled={submitState === 'submitting'}>
+              <span>{submitState === 'submitting' ? 'Sending...' : 'Send Message'}</span>
               <i className="fa-solid fa-arrow-right" aria-hidden="true" />
             </button>
+            {submitMessage ? (
+              <p className={`form-feedback ${submitState === 'error' ? 'is-error' : 'is-success'}`} role="status" aria-live="polite">
+                {submitMessage}
+              </p>
+            ) : null}
           </form>
 
         </div>
@@ -847,29 +863,43 @@ export default function App() {
     window.addEventListener('resize', updateScroll, { passive: true });
     updateScroll();
 
-    /* 3. Cursor follower — pauses when tab is hidden */
-    const cursor = document.getElementById('cursorFollower');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    /* 3. Mouse follower — dot leads, ring trails */
+    const cursor = document.getElementById('mouseFollower');
+    const cursorRing = cursor?.querySelector('.mouse-follower-ring');
+    const cursorDot = cursor?.querySelector('.mouse-follower-dot');
+    const interactiveSelector = 'a, button, [role="button"], input, textarea, select, .project-card, .about-card, .about-flip-card, .cert-card, .contact-link, .skill-pill';
     let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let curX = mouseX, curY = mouseY;
-    let inside = false, rafCursor = null, cursorPaused = false;
+    let dotX = mouseX, dotY = mouseY;
+    let ringX = mouseX, ringY = mouseY;
+    let inside = false, cursorRaf = null, cursorPaused = false;
+    const DOT_SIZE = 9;
+    const RING_SIZE = 34;
 
     const stepCursor = () => {
-      curX += (mouseX - curX) * 0.12;
-      curY += (mouseY - curY) * 0.12;
-      if (cursor) {
-        cursor.style.transform =
-          `translate3d(${curX - cursor.offsetWidth / 2}px,${curY - cursor.offsetHeight / 2}px,0)`;
+      dotX += (mouseX - dotX) * 0.35;
+      dotY += (mouseY - dotY) * 0.35;
+      ringX += (dotX - ringX) * 0.16;
+      ringY += (dotY - ringY) * 0.16;
+
+      if (cursorDot) {
+        cursorDot.style.transform = `translate3d(${dotX - DOT_SIZE / 2}px,${dotY - DOT_SIZE / 2}px,0)`;
       }
-      if (!cursorPaused) rafCursor = requestAnimationFrame(stepCursor);
+      if (cursorRing) {
+        cursorRing.style.transform = `translate3d(${ringX - RING_SIZE / 2}px,${ringY - RING_SIZE / 2}px,0)`;
+      }
+      if (!cursorPaused) cursorRaf = requestAnimationFrame(stepCursor);
     };
 
     const onVisibilityChange = () => {
       if (document.hidden) {
         cursorPaused = true;
-        if (rafCursor) { cancelAnimationFrame(rafCursor); rafCursor = null; }
+        if (cursorRaf) { cancelAnimationFrame(cursorRaf); cursorRaf = null; }
       } else {
         cursorPaused = false;
-        rafCursor = requestAnimationFrame(stepCursor);
+        cursorRaf = requestAnimationFrame(stepCursor);
       }
     };
 
@@ -878,23 +908,27 @@ export default function App() {
       if (!inside) { inside = true; cursor?.classList.add('active'); }
     };
     const onEnter = () => { inside = true; cursor?.classList.add('active'); };
-    const onLeave = () => { inside = false; cursor?.classList.remove('active'); };
+    const onLeave = () => {
+      inside = false;
+      cursor?.classList.remove('active');
+      cursor?.classList.remove('is-hovering');
+    };
+    const onHoverChange = (event) => {
+      const target = event.target instanceof Element ? event.target.closest(interactiveSelector) : null;
+      cursor?.classList.toggle('is-hovering', Boolean(target));
+    };
 
-    window.addEventListener('mousemove', onMove, { passive: true });
-    window.addEventListener('mouseenter', onEnter);
-    window.addEventListener('mouseleave', onLeave);
-    document.addEventListener('visibilitychange', onVisibilityChange);
-
-    document.querySelectorAll('a, button, .project-card, .about-card, .about-flip-card, .cert-card').forEach((el) => {
-      el.addEventListener('mouseenter', () => cursor?.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
-    });
-
-    rafCursor = requestAnimationFrame(stepCursor);
+    if (!prefersReducedMotion && isFinePointer && cursor && cursorRing && cursorDot) {
+      window.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('mouseenter', onEnter);
+      window.addEventListener('mouseleave', onLeave);
+      window.addEventListener('mouseover', onHoverChange, { passive: true });
+      window.addEventListener('focusin', onHoverChange);
+      document.addEventListener('visibilitychange', onVisibilityChange);
+      cursorRaf = requestAnimationFrame(stepCursor);
+    }
 
     /* 4. Magnetic skill pills — track all RAF IDs for clean teardown */
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const pillRafs = new Map();
 
     if (!prefersReducedMotion && isFinePointer) {
@@ -969,8 +1003,10 @@ export default function App() {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('mouseenter', onEnter);
       window.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('mouseover', onHoverChange);
+      window.removeEventListener('focusin', onHoverChange);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      if (rafCursor) cancelAnimationFrame(rafCursor);
+      if (cursorRaf) cancelAnimationFrame(cursorRaf);
       pillRafs.forEach((id) => cancelAnimationFrame(id));
       pillRafs.clear();
     };
@@ -979,7 +1015,10 @@ export default function App() {
   return (
     <>
       <MeshBackground />
-      <div className="cursor-follower" id="cursorFollower" aria-hidden="true" />
+      <div className="mouse-follower" id="mouseFollower" aria-hidden="true">
+        <span className="mouse-follower-ring" />
+        <span className="mouse-follower-dot" />
+      </div>
 
       <FloatingNav onDownloadCV={downloadCV} theme={theme} onToggleTheme={toggleTheme} />
       <HeroSection />
@@ -987,6 +1026,7 @@ export default function App() {
       <section className="portfolio" id="portfolio" aria-label="Portfolio content">
         <div className="portfolio-shell">
           <AboutSection />
+          <EducationSection />
           <ExpertiseSection />
           <ProjectsSection />
           <CertificatesSection />
