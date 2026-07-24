@@ -8,8 +8,8 @@ export interface ProjectItem {
 export interface CertificateItem {
   id: string;
   title: string;
-  issuer: string;
   date: string;
+  issuer: string;
   image?: string;
   verifyUrl: string;
   label: string;
@@ -28,6 +28,18 @@ export interface EducationItem {
 
 export const PROJECTS_DATA: ProjectItem[] = [
   {
+    tag: 'Medical AI & Neural Architecture Research',
+    title: 'CMKLightUnet: MambaLite-KAN Encoder for Medical Segmentation',
+    body: 'Designed a lightweight hybrid architecture combining Selective State Space Mamba-SSM CUDA scanning with tokenized Kolmogorov-Arnold Networks (KAN) in deep encoder stages. Engineered custom Hybrid Multi-Head Attention (HMA) and Wavelet-Based Attention (WBA) gating mechanisms, delivering high-precision organ and lesion segmentation with optimized FLOPs and parameter efficiency.',
+    tech: ['PyTorch', 'Mamba-SSM', 'KAN Encoder', 'CUDA', 'Medical Vision', 'Wavelet Attention']
+  },
+  {
+    tag: 'Computer Vision & Document AI',
+    title: 'YOLO & PaddleOCR Layout Parsing & Font Detection Pipeline',
+    body: 'Built an automated document layout analysis and typography intelligence pipeline. Integrated Ultralytics YOLOv11 for high-speed bounding box text region cropping, PaddleOCR with GPU acceleration for multi-lingual text extraction, and a deep CNN classifier for automated font recognition and layout segmentation.',
+    tech: ['YOLOv11', 'PaddleOCR', 'PyTorch', 'OpenCV', 'Font Recognition', 'Document AI']
+  },
+  {
     tag: 'Green Computing & Data Science',
     title: 'Python vs. R: Energy Efficiency Analysis',
     body: 'Conducted a comprehensive energy consumption analysis comparing Python and R environments across diverse OS architectures (macOS, Linux, Windows). Evaluated the energy footprint and computational efficiency of various machine learning models on multiple datasets to benchmark and promote sustainable computing practices.',
@@ -36,7 +48,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
   {
     tag: 'Deep Learning & CV',
     title: 'Bengali Font Recognition System',
-    body: 'Engineered a computer vision pipeline to classify 25 distinct Bengali font families. Built a custom synthetic dataset and benchmarked standard CNNs (ResNet-50, DenseNet-121, MobileNetV3, VGG) against a highly accurate proposed architecture leveraging ConvNeXt-Tiny combined with Supervised Contrastive Learning.',
+    body: 'Engineered a computer vision pipeline to classify 25 distinct Bengali font families. Built a custom synthetic dataset and benchmarked standard CNNs (ResNet-50, DenseNet-121, MobileNetV3, VGG) against a proposed architecture leveraging ConvNeXt-Tiny combined with Supervised Contrastive Learning.',
     tech: ['PyTorch', 'ConvNeXt', 'Contrastive Learning', 'Computer Vision']
   },
   {
