@@ -22,27 +22,24 @@ import {
 } from './Skills';
 import { IconGithubSocial } from './Navbar';
 
-/* Naturally distributed floating icons with upper right gap filled next to name (Image 2) */
+/* Naturally scattered floating icons across open inner gaps (no edge crowding, no text overlap) */
 const heroFloatingIcons: IconProps[] = [
-  { id: 1, icon: IconPythonColor, className: 'top-[4%] left-[12%]' },
-  { id: 2, icon: IconPyTorchColor, className: 'top-[26%] left-[3%]' },
-  { id: 3, icon: IconKaggleColor, className: 'top-[48%] left-[2%]' },
-  { id: 4, icon: IconReactColor, className: 'bottom-[3%] right-[4%]' },
-  /* GitHub floating icon in upper right background gap (image 2) */
-  { id: 5, icon: IconGithubSocial, className: 'top-[18%] right-[20%]' },
-  { id: 6, icon: IconDockerColor, className: 'top-[4%] right-[22%]' },
-  { id: 7, icon: IconCppColor, className: 'bottom-[3%] left-[32%]' },
-  { id: 8, icon: IconLinuxColor, className: 'top-[6%] right-[5%]' },
-  { id: 9, icon: IconFigmaColor, className: 'bottom-[22%] right-[3%]' },
-  { id: 10, icon: IconJavascriptColor, className: 'top-[85%] left-[3%]' },
-  { id: 11, icon: IconHuggingFaceColor, className: 'top-[24%] right-[4%]' },
-  { id: 12, icon: IconColabColor, className: 'top-[48%] right-[3%]' },
-  /* Roboflow filling middle-right open space above avatar */
-  { id: 13, icon: IconRoboflowColor, className: 'top-[36%] right-[18%]' },
-  { id: 14, icon: IconPandasColor, className: 'bottom-[3%] left-[62%]' },
-  { id: 15, icon: IconPhpColor, className: 'bottom-[3%] right-[28%]' },
-  /* CPU Chip in upper space above MARK PROTIK */
-  { id: 16, icon: Cpu as any, className: 'top-[16%] left-[60%]' },
+  { id: 1, icon: IconPythonColor, className: 'top-[12%] left-[10%]' },
+  { id: 2, icon: IconPyTorchColor, className: 'top-[18%] left-[26%]' },
+  { id: 3, icon: IconDockerColor, className: 'top-[14%] right-[38%]' },
+  { id: 4, icon: IconGithubSocial, className: 'top-[18%] right-[18%]' },
+  { id: 5, icon: IconRoboflowColor, className: 'top-[34%] right-[14%]' },
+  { id: 6, icon: IconHuggingFaceColor, className: 'top-[48%] right-[22%]' },
+  { id: 7, icon: IconKaggleColor, className: 'top-[32%] left-[6%]' },
+  { id: 8, icon: IconLinuxColor, className: 'top-[52%] left-[8%]' },
+  { id: 9, icon: IconJavascriptColor, className: 'top-[72%] left-[14%]' },
+  { id: 10, icon: IconCppColor, className: 'bottom-[12%] left-[36%]' },
+  { id: 11, icon: IconPandasColor, className: 'bottom-[10%] left-[54%]' },
+  { id: 12, icon: IconColabColor, className: 'bottom-[14%] right-[32%]' },
+  { id: 13, icon: IconPhpColor, className: 'bottom-[18%] right-[14%]' },
+  { id: 14, icon: IconReactColor, className: 'bottom-[8%] right-[4%]' },
+  { id: 15, icon: Cpu as any, className: 'top-[16%] left-[65%]' },
+  { id: 16, icon: IconFigmaColor, className: 'top-[62%] left-[2%]' },
 ];
 
 export function Hero() {
@@ -139,7 +136,7 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Sideways Round Profile Avatar with White Border */}
+          {/* Sideways Round Profile Avatar with White Border (Web-optimized detailed photo) */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.8, x: 30 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
