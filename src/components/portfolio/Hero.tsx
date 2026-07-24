@@ -31,8 +31,8 @@ interface ScrambleTextProps {
   className?: string;
 }
 
-/* Sequential Matrix Scramble Text Reveal Component */
-export function ScrambleText({ text, delay = 0, speed = 35, className = '' }: ScrambleTextProps) {
+/* Sequential Matrix Scramble Text Reveal Component - Slower & Smoother */
+export function ScrambleText({ text, delay = 0, speed = 55, className = '' }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState('');
   const [isDone, setIsDone] = useState(false);
 
@@ -61,7 +61,7 @@ export function ScrambleText({ text, delay = 0, speed = 35, className = '' }: Sc
           clearInterval(intervalId);
         }
 
-        iteration += 1 / 3;
+        iteration += 1 / 6; // Slower, more deliberate character decoding
       }, speed);
     }, delay);
 
@@ -155,7 +155,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Sideways Profile Picture & Bio Layout with Sequential Text Scramble Decode */}
+        {/* Sideways Profile Picture & Bio Layout with Slower Sequential Text Scramble Decode */}
         <div className="mt-12 grid md:grid-cols-12 gap-8 items-center">
           
           {/* Bio Text & High-Contrast Buttons */}
@@ -165,15 +165,15 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="md:col-span-8 space-y-6"
           >
-            {/* Sequential Scramble Text Reveal */}
+            {/* Slower Sequential Scramble Text Reveal */}
             <p className="text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4rem]">
-              <ScrambleText text="Software Engineer" delay={400} />
+              <ScrambleText text="Software Engineer" delay={500} speed={55} />
               {' & '}
-              <ScrambleText text="AI Researcher" delay={1100} />
+              <ScrambleText text="AI Researcher" delay={1600} speed={55} />
               {' specializing in '}
-              <ScrambleText text="Computer Vision" delay={1800} className="text-foreground font-semibold" />
+              <ScrambleText text="Computer Vision" delay={2800} speed={55} className="text-foreground font-semibold" />
               {' and '}
-              <ScrambleText text="Machine Learning." delay={2500} className="text-foreground font-semibold" />
+              <ScrambleText text="Machine Learning." delay={4000} speed={55} className="text-foreground font-semibold" />
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
