@@ -49,11 +49,15 @@ export const IconCppColor = (props: React.SVGProps<SVGSVGElement>) => (
 /* Authentic Tux Linux Penguin SVG Logo */
 export const IconLinuxColor = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0" {...props}>
-    <path d="M12 2C9.2 2 7.8 4.5 7.8 7.5c0 1.2.3 2.5.7 3.5C7.2 12.2 6 13.8 6 16c0 2.2 1.8 3.5 3.5 3.5 1.2 0 2.1-.5 2.5-1.2.4.7 1.3 1.2 2.5 1.2 1.7 0 3.5-1.3 3.5-3.5 0-2.2-1.2-3.8-2.5-5 .4-1 .7-2.3.7-3.5C16.2 4.5 14.8 2 12 2z" fill="#FCC624"/>
-    <ellipse cx="10.5" cy="7.5" rx="1.2" ry="1.8" fill="#111"/>
-    <ellipse cx="13.5" cy="7.5" rx="1.2" ry="1.8" fill="#111"/>
-    <polygon points="10.5,9.5 13.5,9.5 12,11.5" fill="#E07B00"/>
-    <path d="M9.5 14c1.2.8 3.8.8 5 0" stroke="#111" strokeWidth="1.2" strokeLinecap="round"/>
+    <path d="M12 2c-3.3 0-6 2.7-6 6 0 1.6.6 3.1 1.7 4.2C6.1 13.5 5 15.5 5 18c0 2.2 2.2 4 5 4 1.2 0 2.3-.4 3.1-1.1.8.7 1.9 1.1 3.1 1.1 2.8 0 5-1.8 5-4 0-2.5-1.1-4.5-2.7-5.8 1.1-1.1 1.7-2.6 1.7-4.2 0-3.3-2.7-6-6-6z" fill="#222"/>
+    <ellipse cx="12" cy="16.5" rx="3.5" ry="4" fill="#FFF"/>
+    <ellipse cx="10" cy="7.5" rx="1.5" ry="2" fill="#FFF"/>
+    <ellipse cx="14" cy="7.5" rx="1.5" ry="2" fill="#FFF"/>
+    <circle cx="10.2" cy="7.5" r="0.8" fill="#000"/>
+    <circle cx="13.8" cy="7.5" r="0.8" fill="#000"/>
+    <path d="M10 9.2c0 0 1 1.5 2 1.5s2-1.5 2-1.5z" fill="#FFA500"/>
+    <ellipse cx="8.5" cy="21" rx="2" ry="1" fill="#FFA500"/>
+    <ellipse cx="15.5" cy="21" rx="2" ry="1" fill="#FFA500"/>
   </svg>
 );
 
@@ -74,9 +78,14 @@ export const IconJavascriptColor = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+/* Authentic Hugging Face 🤗 Smiling Hugging Face Emoji SVG */
 export const IconHuggingFaceColor = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="#FFD21E" className="w-5 h-5 shrink-0" {...props}>
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-4 7.5a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm8 0a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm-7.9 6.3c.3.5 1.7 2.2 3.9 2.2s3.6-1.7 3.9-2.2c.2-.3.1-.7-.2-.8-.3-.2-.7-.1-.8.2-.1.2-1.2 1.6-2.9 1.6s-2.8-1.4-2.9-1.6c-.2-.3-.5-.4-.8-.2-.3.1-.4.5-.2.8z"/>
+  <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0" {...props}>
+    <circle cx="12" cy="12" r="10" fill="#FFD21E"/>
+    <path d="M7.5 9.5c.8-1 2.2-1 3 0M13.5 9.5c.8-1 2.2-1 3 0" stroke="#000" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M8 14.5c1.2 1.8 6.8 1.8 8 0" stroke="#000" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+    <path d="M9.5 15.2c1.2 1.2 3.8 1.2 5 0" fill="#E05454"/>
+    <path d="M3.5 14.5c1.2-1.2 3-1 4 .2M20.5 14.5c-1.2-1.2-3-1-4 .2" stroke="#FFAC1C" strokeWidth="2" strokeLinecap="round"/>
   </svg>
 );
 
@@ -87,9 +96,13 @@ export const IconColabColor = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+/* Authentic Roboflow Purple Camera Lens SVG */
 export const IconRoboflowColor = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="#9900FF" className="w-5 h-5 shrink-0" {...props}>
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+  <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0" {...props}>
+    <rect width="24" height="24" rx="5" fill="#6700EB"/>
+    <path d="M6 7h12v10H6V7z" fill="#FFFFFF" opacity="0.9"/>
+    <circle cx="12" cy="12" r="2.8" fill="#6700EB"/>
+    <circle cx="15.5" cy="9.5" r="0.9" fill="#6700EB"/>
   </svg>
 );
 

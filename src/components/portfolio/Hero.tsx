@@ -22,13 +22,14 @@ import {
 } from './Skills';
 import { IconGithubSocial } from './Navbar';
 
-/* Naturally distributed floating icons with upper gap filled above MARK PROTIK */
+/* Naturally distributed floating icons with upper right gap filled next to name (Image 2) */
 const heroFloatingIcons: IconProps[] = [
   { id: 1, icon: IconPythonColor, className: 'top-[4%] left-[12%]' },
   { id: 2, icon: IconPyTorchColor, className: 'top-[26%] left-[3%]' },
   { id: 3, icon: IconKaggleColor, className: 'top-[48%] left-[2%]' },
   { id: 4, icon: IconReactColor, className: 'bottom-[3%] right-[4%]' },
-  { id: 5, icon: IconGithubSocial, className: 'top-[5%] left-[45%]' },
+  /* GitHub floating icon in upper right background gap (image 2) */
+  { id: 5, icon: IconGithubSocial, className: 'top-[18%] right-[20%]' },
   { id: 6, icon: IconDockerColor, className: 'top-[4%] right-[22%]' },
   { id: 7, icon: IconCppColor, className: 'bottom-[3%] left-[32%]' },
   { id: 8, icon: IconLinuxColor, className: 'top-[6%] right-[5%]' },
@@ -36,11 +37,12 @@ const heroFloatingIcons: IconProps[] = [
   { id: 10, icon: IconJavascriptColor, className: 'top-[85%] left-[3%]' },
   { id: 11, icon: IconHuggingFaceColor, className: 'top-[24%] right-[4%]' },
   { id: 12, icon: IconColabColor, className: 'top-[48%] right-[3%]' },
-  { id: 13, icon: IconRoboflowColor, className: 'top-[68%] left-[2%]' },
+  /* Roboflow filling middle-right open space above avatar */
+  { id: 13, icon: IconRoboflowColor, className: 'top-[36%] right-[18%]' },
   { id: 14, icon: IconPandasColor, className: 'bottom-[3%] left-[62%]' },
   { id: 15, icon: IconPhpColor, className: 'bottom-[3%] right-[28%]' },
-  /* Fills the upper space above MARK PROTIK (as seen in reference image 1) */
-  { id: 16, icon: Cpu as any, className: 'top-[16%] left-[62%]' },
+  /* CPU Chip in upper space above MARK PROTIK */
+  { id: 16, icon: Cpu as any, className: 'top-[16%] left-[60%]' },
 ];
 
 export function Hero() {
