@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Cpu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -21,6 +21,58 @@ import {
   IconPhpColor
 } from './Skills';
 import { IconGithubSocial } from './Navbar';
+
+const GLYPHS = '!@#$%^&*()_+-=[]{}|;:,.<>?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+interface ScrambleTextProps {
+  text: string;
+  delay?: number;
+  speed?: number;
+  className?: string;
+}
+
+/* Sequential Matrix Scramble Text Reveal Component */
+export function ScrambleText({ text, delay = 0, speed = 35, className = '' }: ScrambleTextProps) {
+  const [displayText, setDisplayText] = useState('');
+  const [isDone, setIsDone] = useState(false);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    let intervalId: NodeJS.Timeout;
+    let iteration = 0;
+
+    timeoutId = setTimeout(() => {
+      intervalId = setInterval(() => {
+        setDisplayText(
+          text
+            .split('')
+            .map((char, index) => {
+              if (char === ' ') return ' ';
+              if (index < iteration) {
+                return text[index];
+              }
+              return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+            })
+            .join('')
+        );
+
+        if (iteration >= text.length) {
+          setIsDone(true);
+          clearInterval(intervalId);
+        }
+
+        iteration += 1 / 3;
+      }, speed);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearInterval(intervalId);
+    };
+  }, [text, delay, speed]);
+
+  return <span className={className}>{isDone ? text : displayText}</span>;
+}
 
 /* Naturally scattered floating icons across open inner gaps (no edge crowding, no text overlap) */
 const heroFloatingIcons: IconProps[] = [
@@ -103,7 +155,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Sideways Profile Picture & Bio Layout */}
+        {/* Sideways Profile Picture & Bio Layout with Sequential Text Scramble Decode */}
         <div className="mt-12 grid md:grid-cols-12 gap-8 items-center">
           
           {/* Bio Text & High-Contrast Buttons */}
@@ -113,8 +165,15 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="md:col-span-8 space-y-6"
           >
-            <p className="text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl">
-              Software Engineer & AI Researcher specializing in <span className="text-foreground font-semibold">Computer Vision</span> and <span className="text-foreground font-semibold">Machine Learning</span>.
+            {/* Sequential Scramble Text Reveal */}
+            <p className="text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4rem]">
+              <ScrambleText text="Software Engineer" delay={400} />
+              {' & '}
+              <ScrambleText text="AI Researcher" delay={1100} />
+              {' specializing in '}
+              <ScrambleText text="Computer Vision" delay={1800} className="text-foreground font-semibold" />
+              {' and '}
+              <ScrambleText text="Machine Learning." delay={2500} className="text-foreground font-semibold" />
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
