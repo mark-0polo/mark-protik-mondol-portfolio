@@ -46,9 +46,14 @@ export const IconCppColor = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+/* Authentic Tux Linux Penguin SVG Logo */
 export const IconLinuxColor = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg viewBox="0 0 24 24" fill="#FCC624" className="w-5 h-5 shrink-0" {...props}>
-    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm1 14.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm-1-4a1 1 0 01-1-1V7a1 1 0 112 0v4a1 1 0 01-1 1z"/>
+  <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0" {...props}>
+    <path d="M12 2C9.2 2 7.8 4.5 7.8 7.5c0 1.2.3 2.5.7 3.5C7.2 12.2 6 13.8 6 16c0 2.2 1.8 3.5 3.5 3.5 1.2 0 2.1-.5 2.5-1.2.4.7 1.3 1.2 2.5 1.2 1.7 0 3.5-1.3 3.5-3.5 0-2.2-1.2-3.8-2.5-5 .4-1 .7-2.3.7-3.5C16.2 4.5 14.8 2 12 2z" fill="#FCC624"/>
+    <ellipse cx="10.5" cy="7.5" rx="1.2" ry="1.8" fill="#111"/>
+    <ellipse cx="13.5" cy="7.5" rx="1.2" ry="1.8" fill="#111"/>
+    <polygon points="10.5,9.5 13.5,9.5 12,11.5" fill="#E07B00"/>
+    <path d="M9.5 14c1.2.8 3.8.8 5 0" stroke="#111" strokeWidth="1.2" strokeLinecap="round"/>
   </svg>
 );
 

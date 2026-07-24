@@ -19,56 +19,51 @@ export interface FloatingIconsHeroProps {
   icons: IconProps[];
 }
 
-// A single icon component with its own motion logic
+// A single icon component with mouse repulsion motion physics
 const Icon = ({
-  mouseX,
-  mouseY,
   iconData,
   index,
 }: {
-  mouseX: React.MutableRefObject<number>;
-  mouseY: React.MutableRefObject<number>;
   iconData: IconProps;
   index: number;
 }) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
-  // Motion values for the icon's position, tuned with soft spring physics for silky fluid movement
+  // Motion values for mouse repulsion offset
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 120, damping: 18, mass: 0.6 });
-  const springY = useSpring(y, { stiffness: 120, damping: 18, mass: 0.6 });
+
+  // Smooth fluid spring physics for repulsion
+  const springX = useSpring(x, { stiffness: 140, damping: 18, mass: 0.5 });
+  const springY = useSpring(y, { stiffness: 140, damping: 18, mass: 0.5 });
 
   React.useEffect(() => {
-    const handleMouseMove = () => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect();
+        const iconCenterX = rect.left + rect.width / 2;
+        const iconCenterY = rect.top + rect.height / 2;
+
         const distance = Math.sqrt(
-          Math.pow(mouseX.current - (rect.left + rect.width / 2), 2) +
-            Math.pow(mouseY.current - (rect.top + rect.height / 2), 2)
+          Math.pow(e.clientX - iconCenterX, 2) + Math.pow(e.clientY - iconCenterY, 2)
         );
 
-        // If the cursor is close enough, repel the icon
-        if (distance < 150) {
-          const angle = Math.atan2(
-            mouseY.current - (rect.top + rect.height / 2),
-            mouseX.current - (rect.left + rect.width / 2)
-          );
-          // The closer the cursor, the stronger the repulsion
-          const force = (1 - distance / 150) * 50;
+        // Repel when cursor comes within 180px
+        if (distance < 180) {
+          const angle = Math.atan2(e.clientY - iconCenterY, e.clientX - iconCenterX);
+          const force = (1 - distance / 180) * 65; // Repulsion force strength
           x.set(-Math.cos(angle) * force);
           y.set(-Math.sin(angle) * force);
         } else {
-          // Return to original position when cursor is away
           x.set(0);
           y.set(0);
         }
       }
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [x, y, mouseX, mouseY]);
+  }, [x, y]);
 
   return (
     <motion.div
@@ -81,22 +76,22 @@ const Icon = ({
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
-        delay: index * 0.08,
+        delay: index * 0.05,
         duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.16, 1, 0.3, 1],
       }}
-      className={cn('absolute', iconData.className)}
+      className={cn('absolute pointer-events-auto', iconData.className)}
     >
-      {/* Inner wrapper for continuous floating animation with crisp visibility */}
+      {/* Inner wrapper for continuous subtle floating animation */}
       <motion.div
-        className="flex items-center justify-center w-11 h-11 md:w-13 md:h-13 p-2 rounded-2xl shadow-xl bg-card/90 backdrop-blur-md border border-white/20"
+        className="flex items-center justify-center w-11 h-11 md:w-13 md:h-13 p-2 rounded-2xl shadow-xl bg-card/90 backdrop-blur-md border border-white/20 hover:scale-110 transition-transform duration-300 cursor-pointer"
         animate={{
           y: [0, -6, 0, 6, 0],
           x: [0, 5, 0, -5, 0],
           rotate: [0, 4, 0, -4, 0],
         }}
         transition={{
-          duration: 5 + Math.random() * 5,
+          duration: 4.5 + (index % 5),
           repeat: Infinity,
           repeatType: 'mirror',
           ease: 'easeInOut',
@@ -112,52 +107,42 @@ const FloatingIconsHero = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & FloatingIconsHeroProps
 >(({ className, title, subtitle, ctaText, ctaHref, icons, ...props }, ref) => {
-  // Refs to track the raw mouse position
-  const mouseX = React.useRef(0);
-  const mouseY = React.useRef(0);
-
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    mouseX.current = event.clientX;
-    mouseY.current = event.clientY;
-  };
-
   return (
     <section
       ref={ref}
-      onMouseMove={handleMouseMove}
       className={cn(
         'relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-background',
         className
       )}
       {...props}
     >
-      {/* Container for the background floating icons */}
+      {/* Container for background floating icons */}
       <div className="absolute inset-0 w-full h-full pointer-events-none">
         {icons.map((iconData, index) => (
           <Icon
             key={iconData.id}
-            mouseX={mouseX}
-            mouseY={mouseY}
             iconData={iconData}
             index={index}
           />
         ))}
       </div>
 
-      {/* Container for the foreground content */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-b from-foreground via-foreground/90 to-foreground/60 text-transparent bg-clip-text">
-          {title}
-        </h1>
-        <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed">
-          {subtitle}
-        </p>
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-          <Button asChild size="lg" className="px-8 py-6 text-base font-semibold shadow-lg hover:shadow-primary/20 transition-all">
-            <a href={ctaHref}>{ctaText}</a>
-          </Button>
+      {/* Foreground Content (when used directly) */}
+      {title && (
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pointer-events-auto">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-b from-foreground via-foreground/90 to-foreground/60 text-transparent bg-clip-text">
+            {title}
+          </h1>
+          <p className="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed">
+            {subtitle}
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Button asChild size="lg" className="px-8 py-6 text-base font-semibold shadow-lg transition-all">
+              <a href={ctaHref}>{ctaText}</a>
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 });

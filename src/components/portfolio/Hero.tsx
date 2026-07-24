@@ -22,31 +22,32 @@ import {
 } from './Skills';
 import { IconGithubSocial } from './Navbar';
 
-/* Floating icons positioned safely in outer margins (zero overlap with writings or bio text) */
+/* Naturally distributed floating icons with upper gap filled above MARK PROTIK */
 const heroFloatingIcons: IconProps[] = [
-  { id: 1, icon: IconPythonColor, className: 'top-[4%] left-[3%]' },
-  { id: 2, icon: IconPyTorchColor, className: 'top-[18%] left-[2%]' },
-  { id: 3, icon: IconKaggleColor, className: 'top-[44%] left-[2%]' },
-  { id: 4, icon: IconReactColor, className: 'bottom-[4%] right-[4%]' },
-  { id: 5, icon: IconGithubSocial, className: 'top-[4%] left-[38%]' },
-  { id: 6, icon: IconDockerColor, className: 'top-[4%] right-[25%]' },
-  { id: 7, icon: IconCppColor, className: 'bottom-[4%] left-[4%]' },
-  { id: 8, icon: IconLinuxColor, className: 'top-[6%] right-[4%]' },
-  { id: 9, icon: IconFigmaColor, className: 'bottom-[18%] right-[2%]' },
-  { id: 10, icon: IconJavascriptColor, className: 'bottom-[4%] left-[32%]' },
-  { id: 11, icon: IconHuggingFaceColor, className: 'top-[22%] right-[2%]' },
-  { id: 12, icon: IconColabColor, className: 'top-[48%] right-[2%]' },
-  { id: 13, icon: IconRoboflowColor, className: 'bottom-[18%] left-[2%]' },
-  { id: 14, icon: IconPandasColor, className: 'bottom-[4%] right-[32%]' },
-  { id: 15, icon: IconPhpColor, className: 'top-[64%] left-[2%]' },
-  { id: 16, icon: Cpu as any, className: 'top-[82%] left-[2%]' },
+  { id: 1, icon: IconPythonColor, className: 'top-[4%] left-[12%]' },
+  { id: 2, icon: IconPyTorchColor, className: 'top-[26%] left-[3%]' },
+  { id: 3, icon: IconKaggleColor, className: 'top-[48%] left-[2%]' },
+  { id: 4, icon: IconReactColor, className: 'bottom-[3%] right-[4%]' },
+  { id: 5, icon: IconGithubSocial, className: 'top-[5%] left-[45%]' },
+  { id: 6, icon: IconDockerColor, className: 'top-[4%] right-[22%]' },
+  { id: 7, icon: IconCppColor, className: 'bottom-[3%] left-[32%]' },
+  { id: 8, icon: IconLinuxColor, className: 'top-[6%] right-[5%]' },
+  { id: 9, icon: IconFigmaColor, className: 'bottom-[22%] right-[3%]' },
+  { id: 10, icon: IconJavascriptColor, className: 'top-[85%] left-[3%]' },
+  { id: 11, icon: IconHuggingFaceColor, className: 'top-[24%] right-[4%]' },
+  { id: 12, icon: IconColabColor, className: 'top-[48%] right-[3%]' },
+  { id: 13, icon: IconRoboflowColor, className: 'top-[68%] left-[2%]' },
+  { id: 14, icon: IconPandasColor, className: 'bottom-[3%] left-[62%]' },
+  { id: 15, icon: IconPhpColor, className: 'bottom-[3%] right-[28%]' },
+  /* Fills the upper space above MARK PROTIK (as seen in reference image 1) */
+  { id: 16, icon: Cpu as any, className: 'top-[16%] left-[62%]' },
 ];
 
 export function Hero() {
   return (
     <section id="home" className="relative w-full min-h-screen pt-28 pb-16 flex flex-col justify-center overflow-hidden bg-background">
-      {/* Crisp, clearly visible floating icons positioned away from all text */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none opacity-85 z-0">
+      {/* Background Floating Tech Icons with mouse repulsion interactivity */}
+      <div className="absolute inset-0 w-full h-full opacity-90 z-0">
         <FloatingIconsHero
           title=""
           subtitle=""
@@ -58,7 +59,7 @@ export function Hero() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
         
-        {/* Signature Image (Enlarged and theme-adaptive: Crisp white on dark mode, deep dark on light mode) */}
+        {/* Signature Image (Theme adaptive: Crisp white on dark mode, deep dark on light mode) */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,15 +83,31 @@ export function Hero() {
           <h1 className="font-display font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground">
             Mark Protik
           </h1>
-          <h1 className="font-display font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground/80">
-            Mondol
-          </h1>
+          
+          {/* MONDOL with animated back-and-forth pill box inline with bottom baseline */}
+          <div className="flex flex-wrap items-baseline gap-3 md:gap-5">
+            <h1 className="font-display font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground/80">
+              Mondol
+            </h1>
+            
+            {/* Cute pill box dot moving smoothly back and forth horizontally */}
+            <motion.span
+              animate={{ x: [0, 14, 0] }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                repeatType: 'mirror',
+                ease: 'easeInOut',
+              }}
+              className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-14 rounded-2xl md:rounded-3xl bg-foreground/20 backdrop-blur-md border border-white/20 shadow-lg align-baseline self-end mb-1 md:mb-3 shrink-0"
+            />
+          </div>
         </motion.div>
 
         {/* Sideways Profile Picture & Bio Layout */}
         <div className="mt-12 grid md:grid-cols-12 gap-8 items-center">
           
-          {/* Bio Text & Buttons */}
+          {/* Bio Text & High-Contrast Buttons */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -108,7 +125,13 @@ export function Hero() {
                   <ArrowUpRight className="w-5 h-5" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="px-8 py-6 text-base font-semibold rounded-full border-white/20 hover:bg-white/10 backdrop-blur-md transition-all duration-300 hover:scale-105">
+              
+              <Button 
+                asChild 
+                size="lg" 
+                variant="outline" 
+                className="px-8 py-6 text-base font-semibold rounded-full border-foreground/30 text-foreground bg-transparent hover:bg-foreground hover:text-background shadow-md backdrop-blur-md transition-all duration-300 hover:scale-105"
+              >
                 <a href="#projects">Explore Selected Work</a>
               </Button>
             </div>
