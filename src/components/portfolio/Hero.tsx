@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Cpu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -26,55 +26,117 @@ const GLYPHS = '!@#$%^&*()_+-=[]{}|;:,.<>?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZab
 
 interface ScrambleTextProps {
   text: string;
-  delay?: number;
+  start: boolean;
   speed?: number;
   className?: string;
+  onComplete?: () => void;
 }
 
-/* Sequential Matrix Scramble Text Reveal Component - Slower & Smoother */
-export function ScrambleText({ text, delay = 0, speed = 55, className = '' }: ScrambleTextProps) {
+/* Strict Sequential Matrix Scramble Text Reveal Component */
+export function ScrambleText({ text, start, speed = 40, className = '', onComplete }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState('');
   const [isDone, setIsDone] = useState(false);
+  const hasCompletedRef = useRef(false);
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    if (!start) return;
+
     let intervalId: NodeJS.Timeout;
     let iteration = 0;
 
-    timeoutId = setTimeout(() => {
-      intervalId = setInterval(() => {
-        setDisplayText(
-          text
-            .split('')
-            .map((char, index) => {
-              if (char === ' ') return ' ';
-              if (index < iteration) {
-                return text[index];
-              }
-              return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-            })
-            .join('')
-        );
+    intervalId = setInterval(() => {
+      setDisplayText(
+        text
+          .split('')
+          .map((char, index) => {
+            if (char === ' ') return ' ';
+            if (index < iteration) {
+              return text[index];
+            }
+            return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+          })
+          .join('')
+      );
 
-        if (iteration >= text.length) {
-          setIsDone(true);
-          clearInterval(intervalId);
+      if (iteration >= text.length) {
+        setIsDone(true);
+        clearInterval(intervalId);
+        if (!hasCompletedRef.current) {
+          hasCompletedRef.current = true;
+          if (onComplete) onComplete();
         }
+      }
 
-        iteration += 1 / 6; // Slower, more deliberate character decoding
-      }, speed);
-    }, delay);
+      iteration += 1 / 4;
+    }, speed);
 
     return () => {
-      clearTimeout(timeoutId);
       clearInterval(intervalId);
     };
-  }, [text, delay, speed]);
+  }, [text, start, speed, onComplete]);
 
+  if (!start) return null;
   return <span className={className}>{isDone ? text : displayText}</span>;
 }
 
-/* Naturally scattered floating icons across open inner gaps (no edge crowding, no text overlap) */
+/* Sequential Scramble Bio Text Container */
+export function SequentialBioText() {
+  const [phase, setPhase] = useState(0);
+
+  return (
+    <p className="text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4.5rem]">
+      {/* 1. Software Engineer */}
+      <ScrambleText
+        text="Software Engineer"
+        start={phase >= 0}
+        speed={40}
+        onComplete={() => setPhase(1)}
+      />
+      
+      {/* Connector */}
+      {phase >= 1 && ' & '}
+      
+      {/* 2. AI Researcher */}
+      {phase >= 1 && (
+        <ScrambleText
+          text="AI Researcher"
+          start={phase >= 1}
+          speed={40}
+          onComplete={() => setPhase(2)}
+        />
+      )}
+      
+      {/* Static Anchor */}
+      {phase >= 2 && ' specializing in '}
+      
+      {/* 3. Computer Vision */}
+      {phase >= 2 && (
+        <ScrambleText
+          text="Computer Vision"
+          start={phase >= 2}
+          speed={40}
+          className="text-foreground font-semibold"
+          onComplete={() => setPhase(3)}
+        />
+      )}
+      
+      {/* Connector */}
+      {phase >= 3 && ' and '}
+      
+      {/* 4. Machine Learning. */}
+      {phase >= 3 && (
+        <ScrambleText
+          text="Machine Learning."
+          start={phase >= 3}
+          speed={40}
+          className="text-foreground font-semibold"
+        />
+      )}
+    </p>
+  );
+}
+
+/* Naturally scattered floating icons (Icon #10 C++ moved to bottom-[3%] left-[34%] to avoid button overlap) */
 const heroFloatingIcons: IconProps[] = [
   { id: 1, icon: IconPythonColor, className: 'top-[12%] left-[10%]' },
   { id: 2, icon: IconPyTorchColor, className: 'top-[18%] left-[26%]' },
@@ -85,7 +147,7 @@ const heroFloatingIcons: IconProps[] = [
   { id: 7, icon: IconKaggleColor, className: 'top-[32%] left-[6%]' },
   { id: 8, icon: IconLinuxColor, className: 'top-[52%] left-[8%]' },
   { id: 9, icon: IconJavascriptColor, className: 'top-[72%] left-[14%]' },
-  { id: 10, icon: IconCppColor, className: 'bottom-[12%] left-[36%]' },
+  { id: 10, icon: IconCppColor, className: 'bottom-[3%] left-[34%]' }, /* Fixed overlap under button */
   { id: 11, icon: IconPandasColor, className: 'bottom-[10%] left-[54%]' },
   { id: 12, icon: IconColabColor, className: 'bottom-[14%] right-[32%]' },
   { id: 13, icon: IconPhpColor, className: 'bottom-[18%] right-[14%]' },
@@ -155,7 +217,7 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Sideways Profile Picture & Bio Layout with Slower Sequential Text Scramble Decode */}
+        {/* Sideways Profile Picture & Bio Layout with Strict Sequential Text Scramble Decode */}
         <div className="mt-12 grid md:grid-cols-12 gap-8 items-center">
           
           {/* Bio Text & High-Contrast Buttons */}
@@ -165,16 +227,8 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="md:col-span-8 space-y-6"
           >
-            {/* Slower Sequential Scramble Text Reveal */}
-            <p className="text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4rem]">
-              <ScrambleText text="Software Engineer" delay={500} speed={55} />
-              {' & '}
-              <ScrambleText text="AI Researcher" delay={1600} speed={55} />
-              {' specializing in '}
-              <ScrambleText text="Computer Vision" delay={2800} speed={55} className="text-foreground font-semibold" />
-              {' and '}
-              <ScrambleText text="Machine Learning." delay={4000} speed={55} className="text-foreground font-semibold" />
-            </p>
+            {/* Strict Sequential Scramble Text Container */}
+            <SequentialBioText />
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <Button asChild size="lg" className="px-8 py-6 text-base font-bold rounded-full bg-foreground hover:bg-foreground/90 text-background shadow-lg transition-all duration-300 hover:scale-105">
