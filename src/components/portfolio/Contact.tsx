@@ -107,7 +107,7 @@ export function Contact() {
                     name="name"
                     required
                     placeholder="e.g. John Doe"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 font-sans"
+                    className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 font-sans cursor-text"
                   />
                 </div>
                 <div className="space-y-2">
@@ -118,7 +118,7 @@ export function Contact() {
                     name="email"
                     required
                     placeholder="john@example.com"
-                    className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 font-sans"
+                    className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 font-sans cursor-text"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ export function Contact() {
                   name="subject"
                   required
                   placeholder="Role Opportunity / Collaboration / Inquiry"
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 font-sans"
+                  className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 font-sans cursor-text"
                 />
               </div>
 
@@ -143,7 +143,7 @@ export function Contact() {
                   rows={4}
                   required
                   placeholder="Write your message or project details here..."
-                  className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 resize-none font-sans"
+                  className="w-full px-4 py-3 rounded-xl bg-background border border-white/15 focus:border-white/50 focus:outline-none text-sm transition-all duration-300 resize-none font-sans cursor-text"
                 />
               </div>
 
