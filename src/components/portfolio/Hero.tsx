@@ -116,15 +116,15 @@ export function TypewriterText({ text, start, speed = 40, className = '', onComp
   return <span className={className}>{displayText}</span>;
 }
 
-/* Sequential Scramble & Typewriter Bio Text Container */
+/* Sequential Scramble & Typewriter Bio Text Container (Focused on Computer Vision & Neural Architectures) */
 export function SequentialBioText() {
   const [phase, setPhase] = useState(0);
 
   return (
     <p className="text-base sm:text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4.5rem]">
-      {/* 1. Software Engineer (Matrix Scramble) */}
+      {/* 1. AI Researcher (Matrix Scramble) */}
       <ScrambleText
-        text="Software Engineer"
+        text="AI Researcher"
         start={phase >= 0}
         speed={35}
         onComplete={() => setPhase(1)}
@@ -138,9 +138,9 @@ export function SequentialBioText() {
         onComplete={() => setPhase(2)}
       />
       
-      {/* 3. AI Researcher (Matrix Scramble) */}
+      {/* 3. Computer Vision Engineer (Matrix Scramble) */}
       <ScrambleText
-        text="AI Researcher"
+        text="Computer Vision Specialist"
         start={phase >= 2}
         speed={35}
         onComplete={() => setPhase(3)}
@@ -154,9 +154,9 @@ export function SequentialBioText() {
         onComplete={() => setPhase(4)}
       />
       
-      {/* 5. Computer Vision (Matrix Scramble) */}
+      {/* 5. Neural Architectures (Matrix Scramble) */}
       <ScrambleText
-        text="Computer Vision"
+        text="Neural Architectures"
         start={phase >= 4}
         speed={35}
         className="text-foreground font-semibold"
@@ -171,9 +171,9 @@ export function SequentialBioText() {
         onComplete={() => setPhase(6)}
       />
       
-      {/* 7. Machine Learning. (Matrix Scramble) */}
+      {/* 7. Deep Learning. (Matrix Scramble) */}
       <ScrambleText
-        text="Machine Learning."
+        text="Deep Learning."
         start={phase >= 6}
         speed={35}
         className="text-foreground font-semibold"

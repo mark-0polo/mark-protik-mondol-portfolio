@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sun, Moon, Download } from 'lucide-react';
+import { Sun, Moon, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const IconGithubSocial = (props: React.SVGProps<SVGSVGElement>) => (
@@ -18,7 +18,7 @@ export const IconLinkedinSocial = (props: React.SVGProps<SVGSVGElement>) => (
 interface NavbarProps {
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
-  onDownloadCV: () => void;
+  onOpenCV: () => void;
 }
 
 const navItems = [
@@ -30,7 +30,7 @@ const navItems = [
   { id: 'contact', label: 'Contact' },
 ];
 
-export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
+export function Navbar({ theme, onToggleTheme, onOpenCV }: NavbarProps) {
   const [activeSection, setActiveSection] = useState<string>('home');
 
   /* Scroll Spy Implementation */
@@ -151,8 +151,14 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
           >
             <IconLinkedinSocial className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </a>
-          <Button size="sm" variant="outline" onClick={onDownloadCV} className="flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-semibold shrink-0">
-            <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          <Button 
+            size="sm" 
+            variant="outline" 
+            onClick={onOpenCV} 
+            className="flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-semibold shrink-0 hover:bg-foreground hover:text-background transition-all duration-300"
+            title="View & Download CV"
+          >
+            <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             CV
           </Button>
           <button

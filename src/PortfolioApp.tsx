@@ -9,6 +9,8 @@ import { Projects } from '@/components/portfolio/Projects';
 import { Certificates } from '@/components/portfolio/Certificates';
 import { Contact } from '@/components/portfolio/Contact';
 import { Footer } from '@/components/portfolio/Footer';
+import { CvModal } from '@/components/portfolio/CvModal';
+import { CV_PDF_BASE64 } from '@/data/cvData';
 
 export default function PortfolioApp() {
   /* Theme State Management */
@@ -19,6 +21,9 @@ export default function PortfolioApp() {
       return 'dark';
     }
   });
+
+  /* CV Modal Preview State */
+  const [isCvOpen, setIsCvOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -33,12 +38,19 @@ export default function PortfolioApp() {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
   }, []);
 
-  /* CV Download Helper */
+  const openCV = useCallback(() => {
+    setIsCvOpen(true);
+  }, []);
+
+  const closeCV = useCallback(() => {
+    setIsCvOpen(false);
+  }, []);
+
+  /* Guaranteed Base64 PDF Download Handler (Zero Network Request / Zero 0-Byte Failures) */
   const downloadCV = useCallback(() => {
     const link = document.createElement('a');
-    link.href = 'assets/M-CV.pdf';
+    link.href = CV_PDF_BASE64;
     link.download = 'Mark-Protik-Mondol-CV.pdf';
-    link.rel = 'noopener noreferrer';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -50,7 +62,7 @@ export default function PortfolioApp() {
       <MouseFollower />
 
       {/* Navigation Header */}
-      <Navbar theme={theme} onToggleTheme={toggleTheme} onDownloadCV={downloadCV} />
+      <Navbar theme={theme} onToggleTheme={toggleTheme} onOpenCV={openCV} />
 
       {/* Main Portfolio Sections */}
       <main>
@@ -63,8 +75,15 @@ export default function PortfolioApp() {
         <Contact />
       </main>
 
-      {/* Clean Footer */}
+      {/* Footer */}
       <Footer />
+
+      {/* Interactive Web View & Download CV Modal */}
+      <CvModal
+        isOpen={isCvOpen}
+        onClose={closeCV}
+        onDownload={downloadCV}
+      />
     </div>
   );
 }
