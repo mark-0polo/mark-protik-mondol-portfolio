@@ -36,7 +36,7 @@ export default function PortfolioApp() {
   /* CV Download Helper */
   const downloadCV = useCallback(() => {
     const link = document.createElement('a');
-    link.href = 'assets/Mark-Protik-Mondol-CV.pdf';
+    link.href = 'assets/M-CV.pdf';
     link.download = 'Mark-Protik-Mondol-CV.pdf';
     link.rel = 'noopener noreferrer';
     document.body.appendChild(link);

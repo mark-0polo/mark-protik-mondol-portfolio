@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -20,25 +20,76 @@ interface NavbarProps {
   onDownloadCV: () => void;
 }
 
+const navItems = [
+  { id: 'about', label: 'About' },
+  { id: 'education', label: 'Education' },
+  { id: 'expertise', label: 'Skills' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'certificates', label: 'Certificates' },
+  { id: 'contact', label: 'Contact' },
+];
+
 export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
+  const [activeSection, setActiveSection] = useState<string>('home');
+
+  /* Scroll Spy Implementation */
+  useEffect(() => {
+    const sectionIds = ['home', 'about', 'education', 'expertise', 'projects', 'certificates', 'contact'];
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 140;
+
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sectionIds[i]);
+        if (section) {
+          const top = section.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSection(sectionIds[i]);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <header className="fixed top-4 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
-      <nav className="pointer-events-auto glass-panel rounded-full px-6 py-3 flex items-center gap-6 shadow-2xl border border-border/40 backdrop-blur-xl">
-        <a href="#home" className="text-sm font-display font-bold tracking-tight hover:text-primary transition-colors flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse" />
+      <nav className="pointer-events-auto glass-panel rounded-full px-6 py-3 flex items-center gap-4 sm:gap-6 shadow-2xl border border-border/40 backdrop-blur-xl transition-all duration-300">
+        <a 
+          href="#home" 
+          className={`text-sm font-display font-bold tracking-tight transition-all duration-300 flex items-center gap-2 ${
+            activeSection === 'home' ? 'text-primary font-black' : 'hover:text-primary'
+          }`}
+        >
+          <span className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${activeSection === 'home' ? 'bg-primary scale-125 animate-pulse' : 'bg-primary/50'}`} />
           Mark Protik
         </a>
         
-        <div className="hidden md:flex items-center gap-5 text-sm font-medium text-muted-foreground">
-          <a href="#about" className="hover:text-foreground transition-colors">About</a>
-          <a href="#education" className="hover:text-foreground transition-colors">Education</a>
-          <a href="#expertise" className="hover:text-foreground transition-colors">Skills</a>
-          <a href="#projects" className="hover:text-foreground transition-colors">Projects</a>
-          <a href="#certificates" className="hover:text-foreground transition-colors">Certificates</a>
-          <a href="#contact" className="hover:text-foreground transition-colors">Contact</a>
+        <div className="hidden md:flex items-center gap-1 sm:gap-2 text-sm font-medium text-muted-foreground">
+          {navItems.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
+                  isActive
+                    ? 'text-foreground bg-foreground/15 shadow-sm font-bold border border-white/10'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-foreground/5'
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </div>
 
-        <div className="flex items-center gap-3 pl-2 border-l border-border/40">
+        <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-border/40">
           <a
             href="https://github.com/mark-0polo"
             target="_blank"

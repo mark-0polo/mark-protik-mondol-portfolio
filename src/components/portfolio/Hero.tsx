@@ -260,7 +260,7 @@ export function Hero() {
               <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-white/30 to-white/10 opacity-70 blur-xl group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative p-1 rounded-full bg-card/80 shadow-2xl transition-transform duration-500 hover:scale-105">
                 <img
-                  src="assets/mark_profile.jpg"
+                  src="assets/markp.png"
                   alt="Mark Protik Mondol"
                   className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-white dark:border-white/90 shadow-2xl object-cover object-top"
                 />
