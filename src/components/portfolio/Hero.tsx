@@ -32,7 +32,7 @@ interface ScrambleTextProps {
   onComplete?: () => void;
 }
 
-/* Strict Sequential Matrix Scramble Text Reveal Component */
+/* Strict Matrix Scramble Text Reveal Component */
 export function ScrambleText({ text, start, speed = 40, className = '', onComplete }: ScrambleTextProps) {
   const [displayText, setDisplayText] = useState('');
   const [isDone, setIsDone] = useState(false);
@@ -79,88 +79,134 @@ export function ScrambleText({ text, start, speed = 40, className = '', onComple
   return <span className={className}>{isDone ? text : displayText}</span>;
 }
 
-/* Sequential Scramble Bio Text Container */
+interface TypewriterTextProps {
+  text: string;
+  start: boolean;
+  speed?: number;
+  className?: string;
+  onComplete?: () => void;
+}
+
+/* Character-by-Character Typewriter Text Component for Connectors */
+export function TypewriterText({ text, start, speed = 40, className = '', onComplete }: TypewriterTextProps) {
+  const [displayText, setDisplayText] = useState('');
+  const hasCompletedRef = useRef(false);
+
+  useEffect(() => {
+    if (!start) return;
+
+    let index = 0;
+    const intervalId = setInterval(() => {
+      index += 1;
+      setDisplayText(text.slice(0, index));
+
+      if (index >= text.length) {
+        clearInterval(intervalId);
+        if (!hasCompletedRef.current) {
+          hasCompletedRef.current = true;
+          if (onComplete) onComplete();
+        }
+      }
+    }, speed);
+
+    return () => clearInterval(intervalId);
+  }, [text, start, speed, onComplete]);
+
+  if (!start) return null;
+  return <span className={className}>{displayText}</span>;
+}
+
+/* Sequential Scramble & Typewriter Bio Text Container */
 export function SequentialBioText() {
   const [phase, setPhase] = useState(0);
 
   return (
-    <p className="text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4.5rem]">
-      {/* 1. Software Engineer */}
+    <p className="text-base sm:text-lg md:text-2xl font-sans font-medium text-muted-foreground leading-relaxed max-w-2xl min-h-[4.5rem]">
+      {/* 1. Software Engineer (Matrix Scramble) */}
       <ScrambleText
         text="Software Engineer"
         start={phase >= 0}
-        speed={40}
+        speed={35}
         onComplete={() => setPhase(1)}
       />
       
-      {/* Connector */}
-      {phase >= 1 && ' & '}
+      {/* 2. & (Typewriter) */}
+      <TypewriterText
+        text=" & "
+        start={phase >= 1}
+        speed={45}
+        onComplete={() => setPhase(2)}
+      />
       
-      {/* 2. AI Researcher */}
-      {phase >= 1 && (
-        <ScrambleText
-          text="AI Researcher"
-          start={phase >= 1}
-          speed={40}
-          onComplete={() => setPhase(2)}
-        />
-      )}
+      {/* 3. AI Researcher (Matrix Scramble) */}
+      <ScrambleText
+        text="AI Researcher"
+        start={phase >= 2}
+        speed={35}
+        onComplete={() => setPhase(3)}
+      />
       
-      {/* Static Anchor */}
-      {phase >= 2 && ' specializing in '}
+      {/* 4. specializing in (Typewriter) */}
+      <TypewriterText
+        text=" specializing in "
+        start={phase >= 3}
+        speed={35}
+        onComplete={() => setPhase(4)}
+      />
       
-      {/* 3. Computer Vision */}
-      {phase >= 2 && (
-        <ScrambleText
-          text="Computer Vision"
-          start={phase >= 2}
-          speed={40}
-          className="text-foreground font-semibold"
-          onComplete={() => setPhase(3)}
-        />
-      )}
+      {/* 5. Computer Vision (Matrix Scramble) */}
+      <ScrambleText
+        text="Computer Vision"
+        start={phase >= 4}
+        speed={35}
+        className="text-foreground font-semibold"
+        onComplete={() => setPhase(5)}
+      />
       
-      {/* Connector */}
-      {phase >= 3 && ' and '}
+      {/* 6. and (Typewriter) */}
+      <TypewriterText
+        text=" and "
+        start={phase >= 5}
+        speed={45}
+        onComplete={() => setPhase(6)}
+      />
       
-      {/* 4. Machine Learning. */}
-      {phase >= 3 && (
-        <ScrambleText
-          text="Machine Learning."
-          start={phase >= 3}
-          speed={40}
-          className="text-foreground font-semibold"
-        />
-      )}
+      {/* 7. Machine Learning. (Matrix Scramble) */}
+      <ScrambleText
+        text="Machine Learning."
+        start={phase >= 6}
+        speed={35}
+        className="text-foreground font-semibold"
+      />
     </p>
   );
 }
 
-/* Naturally scattered floating icons (Icon #10 C++ moved to bottom-[3%] left-[34%] to avoid button overlap) */
+/* Floating icons responsive: Organic random distribution, 100% clear of navbar on both Desktop & Mobile */
 const heroFloatingIcons: IconProps[] = [
-  { id: 1, icon: IconPythonColor, className: 'top-[12%] left-[10%]' },
-  { id: 2, icon: IconPyTorchColor, className: 'top-[18%] left-[26%]' },
-  { id: 3, icon: IconDockerColor, className: 'top-[14%] right-[38%]' },
-  { id: 4, icon: IconGithubSocial, className: 'top-[18%] right-[18%]' },
-  { id: 5, icon: IconRoboflowColor, className: 'top-[34%] right-[14%]' },
-  { id: 6, icon: IconHuggingFaceColor, className: 'top-[48%] right-[22%]' },
-  { id: 7, icon: IconKaggleColor, className: 'top-[32%] left-[6%]' },
-  { id: 8, icon: IconLinuxColor, className: 'top-[52%] left-[8%]' },
-  { id: 9, icon: IconJavascriptColor, className: 'top-[72%] left-[14%]' },
-  { id: 10, icon: IconCppColor, className: 'bottom-[3%] left-[34%]' }, /* Fixed overlap under button */
-  { id: 11, icon: IconPandasColor, className: 'bottom-[10%] left-[54%]' },
-  { id: 12, icon: IconColabColor, className: 'bottom-[14%] right-[32%]' },
-  { id: 13, icon: IconPhpColor, className: 'bottom-[18%] right-[14%]' },
-  { id: 14, icon: IconReactColor, className: 'bottom-[8%] right-[4%]' },
-  { id: 15, icon: Cpu as any, className: 'top-[16%] left-[65%]' },
-  { id: 16, icon: IconFigmaColor, className: 'top-[62%] left-[2%]' },
+  { id: 1, icon: IconPythonColor, className: 'top-[15%] left-[8%] md:top-[16%] md:left-[10%]' },
+  { id: 2, icon: IconPyTorchColor, className: 'top-[26%] left-[4%] md:top-[22%] md:left-[24%]' },
+  { id: 3, icon: IconDockerColor, className: 'top-[15%] right-[8%] md:top-[18%] md:right-[32%]' },
+  { id: 4, icon: IconGithubSocial, className: 'top-[26%] right-[4%] md:top-[22%] md:right-[16%]' },
+  { id: 5, icon: IconRoboflowColor, className: 'top-[40%] right-[8%] md:top-[38%] md:right-[12%]' },
+  { id: 6, icon: IconHuggingFaceColor, className: 'bottom-[8%] right-[7%] md:top-[52%] md:right-[20%]' },
+  { id: 7, icon: IconKaggleColor, className: 'top-[36%] left-[10%] md:top-[34%] md:left-[6%]' },
+  { id: 8, icon: IconLinuxColor, className: 'top-[50%] left-[3%] md:top-[52%] md:left-[8%]' },
+  { id: 9, icon: IconJavascriptColor, className: 'bottom-[8%] left-[7%] md:top-[74%] md:left-[14%]' },
+  { id: 10, icon: IconCppColor, className: 'bottom-[3%] left-[38%] md:bottom-[4%] md:left-[34%]' },
+  { id: 11, icon: IconPandasColor, className: 'hidden sm:block md:block md:bottom-[12%] md:left-[54%]' },
+  { id: 12, icon: IconColabColor, className: 'bottom-[15%] right-[12%] md:bottom-[16%] md:right-[28%]' },
+  { id: 13, icon: IconPhpColor, className: 'hidden sm:block md:block md:bottom-[20%] md:right-[14%]' },
+  { id: 14, icon: IconReactColor, className: 'top-[36%] right-[10%] md:bottom-[10%] md:right-[4%]' },
+  { id: 15, icon: Cpu as any, className: 'hidden sm:block md:block md:top-[24%] md:left-[62%]' },
+  { id: 16, icon: IconFigmaColor, className: 'top-[62%] left-[4%] md:top-[64%] md:left-[2%]' },
 ];
 
 export function Hero() {
   return (
-    <section id="home" className="relative w-full min-h-screen pt-28 pb-16 flex flex-col justify-center overflow-hidden bg-background">
+    <section id="home" className="relative w-full min-h-screen pt-24 sm:pt-28 pb-16 flex flex-col justify-center overflow-hidden bg-background">
       {/* Background Floating Tech Icons with mouse repulsion interactivity */}
-      <div className="absolute inset-0 w-full h-full opacity-90 z-0">
+      <div className="absolute inset-0 w-full h-full opacity-80 sm:opacity-90 z-0">
         <FloatingIconsHero
           title=""
           subtitle=""
@@ -170,19 +216,43 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full flex flex-col items-center md:items-start text-center md:text-left">
         
-        {/* Signature Image (Theme adaptive: Crisp white on dark mode, deep dark on light mode) */}
+        {/* Mobile-First Centered Profile Avatar (Top position on mobile screens) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-6 flex justify-center md:hidden"
+          data-profile-avatar="true"
+        >
+          <div className="relative group">
+            <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-white/30 to-white/10 opacity-70 blur-xl group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative p-1 rounded-full bg-card/80 shadow-2xl transition-transform duration-500 hover:scale-105">
+              <img
+                src="assets/markp.png"
+                alt="Mark Protik Mondol"
+                className="w-36 h-36 sm:w-44 sm:h-44 rounded-full border-4 border-white dark:border-white/90 shadow-2xl object-cover object-top transform-gpu antialiased"
+                style={{ imageRendering: 'smooth' }}
+              />
+              <div className="absolute bottom-2 right-2 p-1.5 rounded-full bg-background border-2 border-white shadow-md flex items-center justify-center">
+                <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Signature Image */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-4"
+          className="mb-4 flex justify-center md:justify-start w-full"
         >
           <img
             src="assets/sig2.png"
             alt="Mark Protik Mondol Signature"
-            className="signature-img h-20 md:h-28 w-auto object-contain drop-shadow-md"
+            className="signature-img h-16 sm:h-20 md:h-28 w-auto object-contain drop-shadow-md mx-auto md:mx-0"
           />
         </motion.div>
 
@@ -191,15 +261,15 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-1"
+          className="space-y-1 w-full"
         >
-          <h1 className="font-display font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground">
+          <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground">
             Mark Protik
           </h1>
           
           {/* MONDOL with animated back-and-forth pill box inline with bottom baseline */}
-          <div className="flex flex-wrap items-baseline gap-3 md:gap-5">
-            <h1 className="font-display font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground/80">
+          <div className="flex flex-wrap items-baseline justify-center md:justify-start gap-2 sm:gap-3 md:gap-5">
+            <h1 className="font-display font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight uppercase leading-[0.9] text-foreground/80">
               Mondol
             </h1>
             
@@ -212,29 +282,29 @@ export function Hero() {
                 repeatType: 'mirror',
                 ease: 'easeInOut',
               }}
-              className="inline-block w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-14 rounded-2xl md:rounded-3xl bg-foreground/20 backdrop-blur-md border border-white/20 shadow-lg align-baseline self-end mb-1 md:mb-3 shrink-0"
+              className="inline-block w-7 h-7 sm:w-12 sm:h-12 md:w-16 md:h-14 rounded-2xl md:rounded-3xl bg-foreground/20 backdrop-blur-md border border-white/20 shadow-lg align-baseline self-end mb-1 md:mb-3 shrink-0"
             />
           </div>
         </motion.div>
 
-        {/* Sideways Profile Picture & Bio Layout with Strict Sequential Text Scramble Decode */}
-        <div className="mt-12 grid md:grid-cols-12 gap-8 items-center">
+        {/* Desktop Sideways Profile Picture & Bio Layout */}
+        <div className="mt-8 md:mt-12 grid md:grid-cols-12 gap-8 items-center w-full">
           
           {/* Bio Text & High-Contrast Buttons */}
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="md:col-span-8 space-y-6"
+            className="md:col-span-8 space-y-6 flex flex-col items-center md:items-start"
           >
             {/* Strict Sequential Scramble Text Container */}
             <SequentialBioText />
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Button asChild size="lg" className="px-8 py-6 text-base font-bold rounded-full bg-foreground hover:bg-foreground/90 text-background shadow-lg transition-all duration-300 hover:scale-105">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 sm:gap-4 pt-2 w-full">
+              <Button asChild size="lg" className="px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-bold rounded-full bg-foreground hover:bg-foreground/90 text-background shadow-lg transition-all duration-300 hover:scale-105">
                 <a href="#contact" className="flex items-center gap-2">
                   Get In Touch
-                  <ArrowUpRight className="w-5 h-5" />
+                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
               </Button>
               
@@ -242,19 +312,20 @@ export function Hero() {
                 asChild 
                 size="lg" 
                 variant="outline" 
-                className="px-8 py-6 text-base font-semibold rounded-full border-foreground/30 text-foreground bg-transparent hover:bg-foreground hover:text-background shadow-md backdrop-blur-md transition-all duration-300 hover:scale-105"
+                className="px-6 sm:px-8 py-5 sm:py-6 text-sm sm:text-base font-semibold rounded-full border-foreground/30 text-foreground bg-transparent hover:bg-foreground hover:text-background shadow-md backdrop-blur-md transition-all duration-300 hover:scale-105"
               >
                 <a href="#projects">Explore Selected Work</a>
               </Button>
             </div>
           </motion.div>
 
-          {/* Sideways Round Profile Avatar with White Border (Web-optimized detailed photo) */}
+          {/* Desktop Sideways Round Profile Avatar */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.8, x: 30 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="md:col-span-4 flex justify-start md:justify-end"
+            className="hidden md:flex md:col-span-4 justify-end"
+            data-profile-avatar="true"
           >
             <div className="relative group">
               <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-white/30 to-white/10 opacity-70 blur-xl group-hover:opacity-100 transition-opacity duration-500" />

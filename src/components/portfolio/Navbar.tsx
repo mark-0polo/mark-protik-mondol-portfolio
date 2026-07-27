@@ -69,23 +69,38 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
     }
   };
 
+  const getSectionLabel = (id: string) => {
+    if (id === 'home') return 'Home';
+    const found = navItems.find((n) => n.id === id);
+    return found ? found.label : 'Home';
+  };
+
   return (
-    <header className="fixed top-4 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
-      <nav className="pointer-events-auto glass-panel rounded-full px-6 py-3 flex items-center gap-4 sm:gap-6 shadow-2xl border border-border/40 backdrop-blur-xl transition-all duration-300">
+    <header className="fixed top-3 sm:top-4 inset-x-0 z-40 flex justify-center px-3 sm:px-4 pointer-events-none">
+      <nav className="pointer-events-auto glass-panel rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center gap-3 sm:gap-6 shadow-2xl border border-border/40 backdrop-blur-xl transition-all duration-300">
+        
+        {/* Brand Name */}
         <a 
           href="#home" 
           onClick={(e) => {
             e.preventDefault();
             scrollToSection('home');
           }}
-          className={`text-sm font-display font-bold tracking-tight transition-all duration-300 flex items-center gap-2 ${
+          className={`text-xs sm:text-sm font-display font-bold tracking-tight transition-all duration-300 flex items-center gap-1.5 shrink-0 ${
             activeSection === 'home' ? 'text-primary font-black' : 'hover:text-primary'
           }`}
         >
-          <span className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${activeSection === 'home' ? 'bg-primary scale-125 animate-pulse' : 'bg-primary/50'}`} />
+          <span className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${activeSection === 'home' ? 'bg-primary scale-125 animate-pulse' : 'bg-primary/50'}`} />
           Mark Protik
         </a>
         
+        {/* Mobile-Only Active Section Indicator Badge */}
+        <div className="flex md:hidden items-center gap-1.5 px-3 py-1 rounded-full bg-foreground/10 border border-white/10 text-xs font-bold text-foreground capitalize shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          {getSectionLabel(activeSection)}
+        </div>
+
+        {/* Desktop Navigation Links with Smooth Sliding Active Pill */}
         <div className="hidden md:flex items-center gap-1 sm:gap-2 text-sm font-medium text-muted-foreground relative">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
@@ -97,7 +112,7 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
                   e.preventDefault();
                   scrollToSection(item.id);
                 }}
-                className={`relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 ${
+                className={`relative px-3 py-1.5 rounded-full text-sm font-semibold transition-colors duration-200 ${
                   isActive
                     ? 'text-foreground font-bold'
                     : 'text-muted-foreground hover:text-foreground hover:bg-foreground/5'
@@ -116,35 +131,36 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
           })}
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 pl-2 border-l border-border/40">
+        {/* Action Items: GitHub, LinkedIn, CV Button & Theme Toggle */}
+        <div className="flex items-center gap-1 sm:gap-2 pl-2 border-l border-border/40 shrink-0">
           <a
             href="https://github.com/mark-0polo"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+            className="p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
             title="GitHub Profile"
           >
-            <IconGithubSocial className="w-4 h-4" />
+            <IconGithubSocial className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </a>
           <a
             href="https://www.linkedin.com/in/mark-protik-mondol"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+            className="p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
             title="LinkedIn Profile"
           >
-            <IconLinkedinSocial className="w-4 h-4" />
+            <IconLinkedinSocial className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </a>
-          <Button size="sm" variant="outline" onClick={onDownloadCV} className="hidden sm:inline-flex items-center gap-1.5 rounded-full text-xs font-semibold">
-            <Download className="w-3.5 h-3.5" />
+          <Button size="sm" variant="outline" onClick={onDownloadCV} className="flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-semibold shrink-0">
+            <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
             CV
           </Button>
           <button
             onClick={onToggleTheme}
-            className="p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+            className="p-1.5 sm:p-2 rounded-full hover:bg-muted transition-colors text-muted-foreground hover:text-foreground shrink-0"
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
-            {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
+            {theme === 'dark' ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-700" />}
           </button>
         </div>
       </nav>
