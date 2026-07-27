@@ -96,7 +96,7 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
         
         {/* Mobile-Only Active Section Indicator Badge */}
         <div className="flex md:hidden items-center gap-1.5 px-3 py-1 rounded-full bg-foreground/10 border border-white/10 text-xs font-bold text-foreground capitalize shrink-0">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
           {getSectionLabel(activeSection)}
         </div>
 

@@ -182,7 +182,7 @@ export function SequentialBioText() {
   );
 }
 
-/* Floating icons responsive: Organic random distribution, 100% clear of navbar on both Desktop & Mobile */
+/* Responsive Floating Icons: Positioned gracefully across mobile & desktop open background gaps */
 const heroFloatingIcons: IconProps[] = [
   { id: 1, icon: IconPythonColor, className: 'top-[15%] left-[8%] md:top-[16%] md:left-[10%]' },
   { id: 2, icon: IconPyTorchColor, className: 'top-[26%] left-[4%] md:top-[22%] md:left-[24%]' },
@@ -236,7 +236,7 @@ export function Hero() {
                 style={{ imageRendering: 'smooth' }}
               />
               <div className="absolute bottom-2 right-2 p-1.5 rounded-full bg-background border-2 border-white shadow-md flex items-center justify-center">
-                <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
               </div>
             </div>
           </div>
@@ -337,7 +337,7 @@ export function Hero() {
                   style={{ imageRendering: 'smooth' }}
                 />
                 <div className="absolute bottom-2 right-2 p-1.5 rounded-full bg-background border-2 border-white shadow-md flex items-center justify-center">
-                  <span className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
                 </div>
               </div>
             </div>
