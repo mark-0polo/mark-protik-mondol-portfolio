@@ -3,6 +3,7 @@ export interface ProjectItem {
   title: string;
   body: string;
   tech: string[];
+  githubUrl?: string;
 }
 
 export interface CertificateItem {
@@ -40,6 +41,20 @@ export const PROJECTS_DATA: ProjectItem[] = [
     tech: ['YOLOv11', 'PaddleOCR', 'PyTorch', 'OpenCV', 'Font Recognition', 'Document AI']
   },
   {
+    tag: 'Full-Stack Web & Task Management',
+    title: 'Organet: Smart Project & Task Management System',
+    body: 'Engineered a full-stack PHP & MySQL task management platform featuring role-based access control (Admin, Manager, User), project assignment workflows, priority task scheduling, password security recovery scripts, and automated GitHub Actions CI integration.',
+    tech: ['PHP', 'MySQL', 'JavaScript', 'HTML/CSS', 'GitHub Actions'],
+    githubUrl: 'https://github.com/mark-0polo/Organet'
+  },
+  {
+    tag: 'Interactive Web Application',
+    title: 'Eid Gift Card Creator & Customizer',
+    body: 'Built a web application for designing custom Eid greeting cards. Features live real-time card previews, template selection, drag-and-drop text placement in Bangla & English, typography styling controls, interactive card flips, and 1-click PNG image export.',
+    tech: ['JavaScript', 'HTML5 Canvas', 'CSS3', 'UI/UX Design'],
+    githubUrl: 'https://github.com/mark-0polo/Eid-Card-project'
+  },
+  {
     tag: 'Green Computing & Data Science',
     title: 'Python vs. R: Energy Efficiency Analysis',
     body: 'Conducted a comprehensive energy consumption analysis comparing Python and R environments across diverse OS architectures (macOS, Linux, Windows). Evaluated the energy footprint and computational efficiency of various machine learning models on multiple datasets to benchmark and promote sustainable computing practices.',
@@ -56,12 +71,6 @@ export const PROJECTS_DATA: ProjectItem[] = [
     title: 'Hardware Detection & Analysis',
     body: 'Engineered a custom image dataset spanning 24 distinct hardware classes to train and evaluate object detection models. Conducted an in-depth comparative study between YOLO architectures and various supervised and unsupervised learning algorithms to benchmark accuracy and computational efficiency.',
     tech: ['YOLO', 'Roboflow', 'OpenCV', 'PyTorch']
-  },
-  {
-    tag: 'Software Development',
-    title: 'Organet: Smart Task Organizer',
-    body: 'Engineered a dynamic daily task management system designed to optimize productivity. The platform features automated priority-based reordering, intuitive status tracking, and a streamlined interface to help users efficiently manage and execute their most critical ongoing tasks.',
-    tech: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js']
   },
 ];
 
