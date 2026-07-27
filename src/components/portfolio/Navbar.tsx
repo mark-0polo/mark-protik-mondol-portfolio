@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Sun, Moon, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -57,11 +58,26 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      const topOffset = section.offsetTop - 90;
+      window.scrollTo({
+        top: topOffset,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <header className="fixed top-4 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
       <nav className="pointer-events-auto glass-panel rounded-full px-6 py-3 flex items-center gap-4 sm:gap-6 shadow-2xl border border-border/40 backdrop-blur-xl transition-all duration-300">
         <a 
           href="#home" 
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection('home');
+          }}
           className={`text-sm font-display font-bold tracking-tight transition-all duration-300 flex items-center gap-2 ${
             activeSection === 'home' ? 'text-primary font-black' : 'hover:text-primary'
           }`}
@@ -70,20 +86,31 @@ export function Navbar({ theme, onToggleTheme, onDownloadCV }: NavbarProps) {
           Mark Protik
         </a>
         
-        <div className="hidden md:flex items-center gap-1 sm:gap-2 text-sm font-medium text-muted-foreground">
+        <div className="hidden md:flex items-center gap-1 sm:gap-2 text-sm font-medium text-muted-foreground relative">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             return (
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                className={`relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-300 ${
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.id);
+                }}
+                className={`relative px-3 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-colors duration-200 ${
                   isActive
-                    ? 'text-foreground bg-foreground/15 shadow-sm font-bold border border-white/10'
+                    ? 'text-foreground font-bold'
                     : 'text-muted-foreground hover:text-foreground hover:bg-foreground/5'
                 }`}
               >
-                {item.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeNavPill"
+                    className="absolute inset-0 bg-foreground/15 rounded-full border border-white/20 shadow-sm z-0"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
               </a>
             );
           })}
