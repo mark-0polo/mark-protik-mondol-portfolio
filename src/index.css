@@ -1,0 +1,129 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 10% 96%;
+    --foreground: 220 20% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+
+    --primary: 220 20% 10%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 10% 90%;
+    --secondary-foreground: 220 20% 10%;
+
+    --muted: 40 10% 92%;
+    --muted-foreground: 220 10% 40%;
+
+    --accent: 220 20% 10%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 10% 86%;
+    --input: 40 10% 86%;
+    --ring: 220 20% 10%;
+
+    --radius: 1.25rem;
+  }
+
+  [data-theme="dark"] {
+    --background: 225 14% 6%;
+    --foreground: 40 15% 90%;
+
+    --card: 225 14% 9%;
+    --card-foreground: 40 15% 90%;
+
+    --popover: 225 14% 9%;
+    --popover-foreground: 40 15% 90%;
+
+    --primary: 40 15% 90%;
+    --primary-foreground: 225 14% 6%;
+
+    --secondary: 225 14% 13%;
+    --secondary-foreground: 40 15% 90%;
+
+    --muted: 225 14% 13%;
+    --muted-foreground: 225 10% 64%;
+
+    --accent: 40 15% 90%;
+    --accent-foreground: 225 14% 6%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 40 15% 90%;
+
+    --border: 225 14% 15%;
+    --input: 225 14% 15%;
+    --ring: 40 15% 90%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-white/20 selection:text-white;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom Font Utilities */
+.font-display {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-sans {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-mono {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Signature Image Color Adaptation */
+.signature-img {
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .signature-img {
+  filter: invert(1) brightness(2.2) opacity(0.95);
+  mix-blend-mode: screen;
+}
+
+[data-theme="light"] .signature-img {
+  filter: invert(0) brightness(0.15) opacity(0.9);
+  mix-blend-mode: multiply;
+}
+
+/* Monochrome Glassmorphism & Panel Styling */
+.glass-panel {
+  @apply bg-card/75 backdrop-blur-xl border border-white/10 shadow-2xl transition-all duration-500 ease-out;
+}
+
+.glass-pill {
+  @apply bg-card/65 backdrop-blur-md border border-white/10 shadow-sm transition-all duration-300 ease-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-white/20 rounded-full hover:bg-white/40;
+}
